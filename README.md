@@ -1,5 +1,7 @@
 # School Management App
 
+Deployed on [VERCEL](https://school-app-mgmt.vercel.app/)
+
 ## Getting Started
 
 First, run the development server:

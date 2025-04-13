@@ -1,6 +1,6 @@
 # 🏫 School Management System
 
-[![Deployment Status](https://img.shields.io/badge/deployment-active-brightgreen)](https://school-app-mgmt.vercel.app/)
+[![Deployment Status](https://img.shields.io/badge/deployment-active-brightgreen)](https://mgmt-sys.vercel.app/dashboard/admin)
 
 ![Next.js](https://img.shields.io/badge/Next.js-14.2.5-black?style=for-the-badge&logo=next.js)
 ![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)
@@ -77,6 +77,7 @@ yarn dev
 4. Open http://localhost:3000 in your browser to see the application.
 
 ## 📁 Project Structure
+
 ```
 ├── public/             # Static assets
 ├── src/
@@ -105,6 +106,7 @@ The system supports the following user roles:
 ## 🔒 Environment Variables
 
 Create a .env.local file with the following variables
+
 ```bash
 NEXT_PUBLIC_API_URL=your_api_url
 DATABASE_URL=your_database_connection_string
@@ -138,7 +140,7 @@ Project Link: https://github.com/andricolae/school-mgmt
 
 ## 🙏 Acknowledgements
 
-[Next.js](https://nextjs.org/)<br>
-[Tailwind CSS](https://tailwindcss.com/)<br>
-[Recharts](https://recharts.org/)<br>
-[React Big Calendar](https://github.com/jquense/react-big-calendar)<br>
+[Next.js](https://nextjs.org/)`<br>`
+[Tailwind CSS](https://tailwindcss.com/)`<br>`
+[Recharts](https://recharts.org/)`<br>`
+[React Big Calendar](https://github.com/jquense/react-big-calendar)`<br>`

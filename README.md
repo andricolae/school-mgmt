@@ -134,11 +134,11 @@ Distributed under the MIT License. See LICENSE for more information.
 
 ## 📞 Contact
 
-Project Link: https://github.com/yourusername/school-management-system
+Project Link: https://github.com/andricolae/school-mgmt
 
 ## 🙏 Acknowledgements
 
-[Next.js](https://nextjs.org/)
-[Tailwind CSS](https://tailwindcss.com/)
-[Recharts](https://recharts.org/)
-[React Big Calendar](https://github.com/jquense/react-big-calendar)
+[Next.js](https://nextjs.org/)<br>
+[Tailwind CSS](https://tailwindcss.com/)<br>
+[Recharts](https://recharts.org/)<br>
+[React Big Calendar](https://github.com/jquense/react-big-calendar)<br>

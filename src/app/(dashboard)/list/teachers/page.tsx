@@ -2,9 +2,9 @@ import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Table from "@/components/Table"
 import TableSearch from "@/components/TableSearch"
-import { role, teachersData } from "@/lib/data"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
+import { role } from "@/lib/utils"
 import { Class, Prisma, Subject, Teacher } from "@prisma/client"
 import Image from "next/image"
 import Link from "next/link"
@@ -41,10 +41,12 @@ const columns = [
     accessor: "address",
     className: "hidden lg:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "actions",
-  }
+  ...(role === "admin" ? [
+    {
+      header: "Actions",
+      accessor: "action",
+    },] : []
+  ),
 ]
 
 const renderRow = (item: TeacherList) => (
@@ -69,9 +71,6 @@ const renderRow = (item: TeacherList) => (
           </button>
         </Link>
         {role === "admin" && (
-          // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-orange">
-          //     <Image src='/delete.png' alt="" width={16} height={16} />
-          // </button>
           <FormModal table="teacher" type="delete" id={item.id} />
         )}
       </div>
@@ -96,11 +95,11 @@ const TeacherListPage = async ({ searchParams }: { searchParams: { [key: string]
               },
             };
             break;
-            case "search":
-              query.name = {contains: value, mode: "insensitive"};
-              break;
-            default:
-              break;
+          case "search":
+            query.name = { contains: value, mode: "insensitive" };
+            break;
+          default:
+            break;
         }
       }
     }
@@ -116,7 +115,7 @@ const TeacherListPage = async ({ searchParams }: { searchParams: { [key: string]
       take: ITEM_PER_PAGE,
       skip: ITEM_PER_PAGE * (p - 1)
     }),
-    prisma.teacher.count({where:query})
+    prisma.teacher.count({ where: query })
   ]);
 
   return (
@@ -133,9 +132,6 @@ const TeacherListPage = async ({ searchParams }: { searchParams: { [key: string]
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
             {role === "admin" && (
-              // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
-              //   <Image src="/plus.png" alt="" width={14} height={14} /> 
-              // </button>
               <FormModal table="teacher" type="create" />
             )}
           </div>

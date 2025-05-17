@@ -44,11 +44,7 @@ const SubjectForm = ({
     })
 
     const router = useRouter();
-    // useEffect(() => {
-    //     if (type === "update" && data?.id) {
-    //         setValue("id", data.id);
-    //     }
-    // }, [data, setValue, type]);
+
     useEffect(() => {
         if (state.success) {
             toast(`Subject has been ${type === "create" ? "created" : "updated"} successfully!`);

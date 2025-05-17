@@ -104,8 +104,6 @@ const ResultListPage = async ({
 
     const p = page ? parseInt(page) : 1;
 
-    // URL PARAMS CONDITION
-
     const query: Prisma.ResultWhereInput = {};
 
     if (queryParams) {
@@ -127,9 +125,7 @@ const ResultListPage = async ({
             }
         }
     }
-
-    // ROLE CONDITIONS
-
+    
     switch (role) {
         case "admin":
             break;

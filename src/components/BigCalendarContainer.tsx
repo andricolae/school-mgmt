@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import BigCalendar from "./BigCalendar";
-import { adjustScheduleTOCurrentWeek } from "@/lib/utils";
+import { adjustScheduleToCurrentWeek } from "@/lib/utils";
 
 const BigCalendarContainer = async (
     { type, id, }
@@ -24,12 +24,10 @@ const BigCalendarContainer = async (
         end: lesson.endTime,
     }));
 
-    // console.log(data);
-
-    const schedule = adjustScheduleTOCurrentWeek(data);
+    const schedule = adjustScheduleToCurrentWeek(data);
 
     return (
-        <div className=''><BigCalendar data={schedule} /></div>
+        <div className='h-[500px]'><BigCalendar data={schedule} /></div>
     )
 }
 

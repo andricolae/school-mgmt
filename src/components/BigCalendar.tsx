@@ -3,10 +3,8 @@
 import { Calendar, momentLocalizer, View, Views } from 'react-big-calendar'
 import moment from 'moment'
 import "react-big-calendar/lib/css/react-big-calendar.css"
-import { useState } from 'react';
-// import 'moment/locale/ro'
+import { useEffect, useState } from 'react';
 
-// moment.locale('ro');
 const localizer = momentLocalizer(moment)
 
 const BigCalendar = ({
@@ -15,6 +13,22 @@ const BigCalendar = ({
     data: { title: string; start: Date; end: Date }[]
 }) => {
     const [view, setView] = useState<View>(Views.WORK_WEEK)
+    const [events, setEvents] = useState<any[]>([])
+
+    useEffect(() => {
+        const formattedEvents = data.map(event => {
+            const start = new Date(event.start);
+            const end = new Date(event.end);
+
+            return {
+                title: event.title,
+                start,
+                end
+            };
+        });
+
+        setEvents(formattedEvents);
+    }, [data]);
 
     const handleOnChangeView = (selectedView: View) => {
         setView(selectedView);
@@ -36,6 +50,5 @@ const BigCalendar = ({
         />
     );
 }
-
 
 export default BigCalendar;

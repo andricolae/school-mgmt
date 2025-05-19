@@ -1,6 +1,6 @@
 "use client"
 
-import { deleteSubject } from "@/lib/actions";
+import { deleteClass, deleteExam, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,17 +11,17 @@ import { FormContainerProps } from "./FormContainer";
 
 const deleteActionMap = {
     subject: deleteSubject,
-    class: deleteSubject,
+    class: deleteClass,
     lesson: deleteSubject,
-    exam: deleteSubject,
+    exam: deleteExam,
     assignment: deleteSubject,
     result: deleteSubject,
     attendance: deleteSubject,
     event: deleteSubject,
     announcement: deleteSubject,
     parent: deleteSubject,
-    teacher: deleteSubject,
-    student: deleteSubject,
+    teacher: deleteTeacher,
+    student: deleteStudent,
 }
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
@@ -33,10 +33,15 @@ const StudentForm = dynamic(() => import("./forms/StudentForm"), {
 const SubjectForm = dynamic(() => import("./forms/SubjectForm"), {
     loading: () => <h1>Loading...</h1>,
 });
+const ClassForm = dynamic(() => import("./forms/ClassForm"), {
+    loading: () => <h1>Loading...</h1>,
+});
+const ExamForm = dynamic(() => import("./forms/ExamForm"), {
+    loading: () => <h1>Loading...</h1>
+});
+
 const ParentForm = dynamic(() => import("./forms/ParentForm"));
-const ClassForm = dynamic(() => import("./forms/ClassForm"));
 const LessonForm = dynamic(() => import("./forms/LessonForm"));
-const ExamForm = dynamic(() => import("./forms/ExamForm"));
 const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"));
 const ResultForm = dynamic(() => import("./forms/ResultForm"));
 const AttendanceForm = dynamic(() => import("./forms/AttendanceForm"));
@@ -81,7 +86,7 @@ const FormModal = ({ table, type, data, id, relatedData }: FormContainerProps & 
 
         useEffect(() => {
             if (state.success) {
-                toast(`Subject has been deleted successfully!`);
+                toast(`${table} has been deleted successfully!`);
                 setOpen(false);
                 router.refresh();
             }

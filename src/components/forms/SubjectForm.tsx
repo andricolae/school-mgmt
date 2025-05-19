@@ -66,14 +66,16 @@ const SubjectForm = ({
                     register={register}
                     error={errors?.name}
                 />
-                <InputField
+                {data && (
+                    <InputField
                     label="Id"
                     name="id"
                     defaultValue={data?.id}
                     register={register}
                     error={errors?.id}
                     hidden
-                />
+                    />
+                )}
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
                     <label className="text-xs text-gray-400">Teachers</label>
                     <select

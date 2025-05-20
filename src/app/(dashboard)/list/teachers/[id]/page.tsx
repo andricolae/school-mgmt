@@ -43,7 +43,7 @@ const SingleTeacherPage = async ({
                     <div className="bg-sky py-6 px-4 rounded-md flex-1 flex gap-4">
                         <div className="w-1/3">
                             <Image
-                                src={teacher.img || "noAvatar.png"}
+                                src={teacher.img || "/noAvatar.png"}
                                 alt=""
                                 width={144}
                                 height={144}
@@ -111,7 +111,7 @@ const SingleTeacherPage = async ({
 
                 <div className="mt-4 bg-white rounded-md p-4 h-[500px]">
                     <h1>Teacher&apos;s Schedule</h1>
-                    {/* <BigCalendarContainer type="teacherId" id={teacher.id} /> */}
+                    <BigCalendarContainer type="teacherId" id={teacher.id} />
                 </div>
             </div>
 

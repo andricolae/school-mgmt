@@ -318,7 +318,6 @@ export const deleteStudent = async (currentState: CurrentState, data: FormData) 
 export const createExam = async (currentState: CurrentState, data: ExamSchema) => {
     const { userId, sessionClaims } = auth();
     const role = (sessionClaims?.metadata as { role?: string })?.role;
-
     try {
         if (role === "teacher") {
             const teacherLesson = await prisma.lesson.findFirst({

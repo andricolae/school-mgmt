@@ -40,7 +40,7 @@ const ClassForm = ({
         ? createClass : updateClass, { success: false, error: false })
 
     const onSubmit = handleSubmit(data => {
-        console.log("data at submit", data);
+        // console.log("data at submit", data);
         formAction(data);
     })
 

@@ -5,7 +5,7 @@ export const subjectSchema = z.object({
     name: z
         .string()
         .min(1, { message: 'Subject name is required' }),
-        teachers:z.array(z.string()),
+    teachers: z.array(z.string()),
 });
 
 export type SubjectSchema = z.infer<typeof subjectSchema>;
@@ -23,7 +23,7 @@ export const classSchema = z.object({
         .min(1, { message: 'Grade name is required' }),
     supervisorId: z
         .string()
-        .optional(),    
+        .optional(),
 });
 
 export type ClassSchema = z.infer<typeof classSchema>;
@@ -52,7 +52,7 @@ export const teacherSchema = z.object({
     bloodType: z.string().min(1, { message: "Blood Type is required!" }),
     birthday: z.coerce.date({ message: "Birthday is required!" }),
     gender: z.enum(["FEMALE", "MALE", "OTHER"], { message: "Gender is required!" }),
-    subjects:z.array(z.string()).optional(),
+    subjects: z.array(z.string()).optional(),
 });
 
 export type TeacherSchema = z.infer<typeof teacherSchema>;
@@ -81,9 +81,9 @@ export const studentSchema = z.object({
     bloodType: z.string().min(1, { message: "Blood Type is required!" }),
     birthday: z.coerce.date({ message: "Birthday is required!" }),
     gender: z.enum(["FEMALE", "MALE", "OTHER"], { message: "Gender is required!" }),
-    gradeId: z.coerce.number().min(1,{message:"Grade is required"}),
-    classId: z.coerce.number().min(1,{message:"Class is required"}),
-    parentId: z.coerce.string().min(1,{message:"Parent ID is required"}),
+    gradeId: z.coerce.number().min(1, { message: "Grade is required" }),
+    classId: z.coerce.number().min(1, { message: "Class is required" }),
+    parentId: z.coerce.string().min(1, { message: "Parent ID is required" }),
 });
 
 export type StudentSchema = z.infer<typeof studentSchema>;
@@ -93,9 +93,9 @@ export const examSchema = z.object({
     title: z
         .string()
         .min(1, { message: 'Subject name is required' }),
-    startTime: z.coerce.date({message:"Start time is required!"}),
-    endTime: z.coerce.date({message:"End time is required!"}),
-    lessonId: z.coerce.number({message:"Lesson is required!"}),
+    startTime: z.coerce.date({ message: "Start time is required!" }),
+    endTime: z.coerce.date({ message: "End time is required!" }),
+    lessonId: z.coerce.number({ message: "Lesson is required!" }),
 });
 
 export type ExamSchema = z.infer<typeof examSchema>;
@@ -105,9 +105,9 @@ export const assignmentSchema = z.object({
     title: z
         .string()
         .min(1, { message: 'Subject name is required' }),
-    startDate: z.coerce.date({message:"Start date is required!"}),
-    dueDate: z.coerce.date({message:"Due date is required!"}),
-    lessonId: z.coerce.number({message:"Lesson is required!"}),
+    startDate: z.coerce.date({ message: "Start date is required!" }),
+    dueDate: z.coerce.date({ message: "Due date is required!" }),
+    lessonId: z.coerce.number({ message: "Lesson is required!" }),
 });
 
 export type AssignmentSchema = z.infer<typeof assignmentSchema>;
@@ -142,3 +142,40 @@ export const announcementSchema = z.object({
 });
 
 export type AnnouncementSchema = z.infer<typeof announcementSchema>;
+
+export const lessonSchema = z.object({
+    id: z.coerce.number().optional(),
+    name: z.string().min(1, { message: "Lesson name is required" }),
+    day: z.enum(["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"], { message: "Day is required" }),
+    startTime: z.coerce.date({ message: "Start time is required" }),
+    endTime: z.coerce.date({ message: "End time is required" }),
+    subjectId: z.coerce.number({ message: "Subject is required" }),
+    classId: z.coerce.number({ message: "Class is required" }),
+    teacherId: z.string().min(1, { message: "Teacher is required" }),
+});
+
+export type LessonSchema = z.infer<typeof lessonSchema>;
+
+export const parentSchema = z.object({
+    id: z.string().optional(),
+    username: z
+        .string()
+        .min(3, { message: 'Username must be at least 3 characters long!' })
+        .max(20, { message: 'Username must be max 20 characters long!' }),
+    password: z
+        .string()
+        .min(6, { message: "Password must be at least 6 characters long!" })
+        .optional()
+        .or(z.literal("")),
+    name: z.string().min(1, { message: "First Name is required!" }),
+    surname: z.string().min(1, { message: "Last Name is required!" }),
+    email: z
+        .string()
+        .email({ message: "Invalid email address!" })
+        .optional()
+        .or(z.literal("")),
+    phone: z.string().min(1, { message: "Phone number is required!" }),
+    address: z.string().min(1, { message: "Address is required!" }),
+});
+
+export type ParentSchema = z.infer<typeof parentSchema>;

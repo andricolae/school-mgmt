@@ -63,8 +63,24 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
                 const studentClasses = await prisma.class.findMany({
                     include: { _count: { select: { students: true } } }
                 });
-                relatedData = { classes: studentClasses, grades: studentGrades };
+                const studentParents = await prisma.parent.findMany({
+                    select: { id: true, name: true, surname: true },
+                });
+                relatedData = {
+                    classes: studentClasses,
+                    grades: studentGrades,
+                    parents: studentParents
+                };
                 break;
+            // case "student":
+            //     const studentGrades = await prisma.grade.findMany({
+            //         select: { id: true, level: true },
+            //     });
+            //     const studentClasses = await prisma.class.findMany({
+            //         include: { _count: { select: { students: true } } }
+            //     });
+            //     relatedData = { classes: studentClasses, grades: studentGrades };
+            //     break;
             case "exam":
                 const examLessons = await prisma.lesson.findMany({
                     where: {
@@ -72,7 +88,6 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
                     },
                     select: { id: true, name: true },
                 });
-
                 relatedData = { lessons: examLessons };
                 break;
             case "assignment":
@@ -82,7 +97,6 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
                     },
                     select: { id: true, name: true },
                 });
-
                 relatedData = { lessons: assignmentLessons };
                 break;
             case "result":
@@ -157,7 +171,6 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
                         grade: { select: { level: true } }
                     },
                 });
-
                 relatedData = { classes: eventClasses };
                 break;
             case "announcement":
@@ -177,8 +190,45 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
                         grade: { select: { level: true } }
                     },
                 });
-
                 relatedData = { classes: announcementClasses };
+                break;
+            case "lesson":
+                const lessonSubjects = await prisma.subject.findMany({
+                    where: {
+                        ...(role === "teacher" ? {
+                            teachers: {
+                                some: {
+                                    id: userId!
+                                }
+                            }
+                        } : {}),
+                    },
+                    select: { id: true, name: true },
+                });
+                const lessonClasses = await prisma.class.findMany({
+                    select: {
+                        id: true,
+                        name: true,
+                        grade: { select: { level: true } }
+                    },
+                });
+                const lessonTeachers = await prisma.teacher.findMany({
+                    select: { id: true, name: true, surname: true },
+                });
+                relatedData = {
+                    subjects: lessonSubjects,
+                    classes: lessonClasses,
+                    teachers: lessonTeachers
+                };
+                break;
+            case "parent":
+                const availableStudents = await prisma.student.findMany({
+                    where: {
+                        parentId: data ? data.id : undefined,
+                    },
+                    select: { id: true, name: true, surname: true },
+                });
+                relatedData = { students: availableStudents };
                 break;
             default:
                 break;

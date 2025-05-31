@@ -1,16 +1,4 @@
 #############################################################
-###############        CREATING A FORM        ###############
-#############################################################
-
-    * CREATE SCHEMA
-    * CREATE ACTIONS
-    * CHANGE LIST COMPONENT
-    * NEW CASE IN FORM CONTAINER
-    * UPDATE FORM MODAL
-    * CHANGE TYPE IN DESIGNATED FORM
-    * USEFORM STATE HOOK + REFRESH PAGE IN DESIGNATED FORM
-
-#############################################################
 ###############           DEPLOYMENT          ###############
 #############################################################
     
@@ -34,10 +22,22 @@
     
     * PARENT DASHBOARD ISSUES
 
+    * SOME FORMS DO NOT PRELOAD WITH DB CONTENT AT UPDATE
+
     * FORMS TO IMPLEMENT:
-        - RESULTS
-        - EVENTS
         - ANNOUNCEMENTS
         - LESSONS
         - PARENTS
         - ATTENDANCE + WHOLE PAGE & FETCH
+
+#############################################################
+###############        CREATING A FORM        ###############
+#############################################################
+
+    * CREATE SCHEMA
+    * CREATE ACTIONS
+    * CHANGE LIST COMPONENT
+    * NEW CASE IN FORM CONTAINER
+    * UPDATE FORM MODAL
+    * CHANGE TYPE IN DESIGNATED FORM
+    * USEFORM STATE HOOK + REFRESH PAGE IN DESIGNATED FORM

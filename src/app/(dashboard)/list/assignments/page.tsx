@@ -1,3 +1,4 @@
+import FormContainer from "@/components/FormContainer"
 import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Table from "@/components/Table"
@@ -5,15 +6,8 @@ import TableSearch from "@/components/TableSearch"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
 import { auth } from "@clerk/nextjs/server"
-// import { currentUserId, role } from "@/lib/utils"
-// import { currentUser } from "@clerk/nextjs/server"
 import { Assignment, Class, Prisma, Subject, Teacher } from "@prisma/client"
 import Image from "next/image"
-import Link from "next/link"
-
-const { userId, sessionClaims } = auth();
-export const role = (sessionClaims?.metadata as { role?: string })?.role;
-export const currentUserId = userId;
 
 type AssignmentList = Assignment & {
     lesson: {
@@ -22,6 +16,10 @@ type AssignmentList = Assignment & {
         teacher: Teacher
     }
 }
+
+const { userId, sessionClaims } = auth();
+export const role = (sessionClaims?.metadata as { role?: string })?.role;
+export const currentUserId = userId;
 
 const columns = [
     {
@@ -57,8 +55,8 @@ const renderRow = (item: AssignmentList) => (
             <div className="flex items-center gap-2">
                 {(role === "admin" || role === "teacher") && (
                     <>
-                        <FormModal table="assignment" type="update" data={item} />
-                        <FormModal table="assignment" type="delete" id={item.id} />
+                        <FormContainer table="assignment" type="update" data={item} />
+                        <FormContainer table="assignment" type="delete" id={item.id} />
                     </>
                 )}
             </div>
@@ -149,15 +147,17 @@ const AssignmentListPage = async ({ searchParams }: { searchParams: { [key: stri
                 <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-auto'>
                     <TableSearch />
                     <div className='flex items-center gap-4 self-end'>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
+                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
                             <Image src="/filter.png" alt="" width={14} height={14} />
-                        </button>
+                        </button> */}
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
                             <Image src="/sort.png" alt="" width={14} height={14} />
                         </button>
-                        {role === "admin" || (role === "teacher" && (
-                            <FormModal table="assignment" type="create" />
-                        ))}
+                        {(role === "admin" || role === "teacher") && (
+                            <>
+                                <FormContainer table="assignment" type="create" />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

@@ -28,6 +28,11 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
 
     let relatedData = {}
 
+    const { userId, sessionClaims } = auth();
+    const role = (sessionClaims?.metadata as {
+        role?: "admin" | "teacher" | "student" | "parent";
+    })?.role;
+
     if (type !== "delete") {
         switch (table) {
             case "subject":
@@ -61,11 +66,6 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
                 relatedData = { classes: studentClasses, grades: studentGrades };
                 break;
             case "exam":
-                const { userId, sessionClaims } = auth();
-                const role = (sessionClaims?.metadata as {
-                    role?: "admin" | "teacher" | "student" | "parent";
-                })?.role;
-
                 const examLessons = await prisma.lesson.findMany({
                     where: {
                         ...(role === "teacher" ? { teacherId: userId! } : {}),
@@ -74,6 +74,16 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
                 });
 
                 relatedData = { lessons: examLessons };
+                break;
+            case "assignment":
+                const assignmentLessons = await prisma.lesson.findMany({
+                    where: {
+                        ...(role === "teacher" ? { teacherId: userId! } : {}),
+                    },
+                    select: { id: true, name: true },
+                });
+
+                relatedData = { lessons: assignmentLessons };
                 break;
             default:
                 break;

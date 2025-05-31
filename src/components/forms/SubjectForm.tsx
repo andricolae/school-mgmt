@@ -39,7 +39,6 @@ const SubjectForm = ({
         ? createSubject : updateSubject, { success: false, error: false })
 
     const onSubmit = handleSubmit(data => {
-        // console.log(data);
         formAction(data);
     })
 

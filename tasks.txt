@@ -1,0 +1,43 @@
+#############################################################
+###############        CREATING A FORM        ###############
+#############################################################
+
+    * CREATE SCHEMA
+    * CREATE ACTIONS
+    * CHANGE LIST COMPONENT
+    * NEW CASE IN FORM CONTAINER
+    * UPDATE FORM MODAL
+    * CHANGE TYPE IN DESIGNATED FORM
+    * USEFORM STATE HOOK + REFRESH PAGE IN DESIGNATED FORM
+
+#############################################################
+###############           DEPLOYMENT          ###############
+#############################################################
+    
+    * 6:01:10
+
+#############################################################
+###############          VARIOUS BUGS         ###############
+#############################################################
+   
+    * FINANCE DASHBOARD ?!
+
+    * ANNOUNCEMENTS CARD DISPLAY LOGIC ACCORDING TO THE DATE
+
+    * TEACHER EDIT FORM NOT FETCHING GENDER AND CLASSES
+
+    * SEED SYNCED WITH CLERK FOR DEMO USABILITY
+
+    * PARENT NAME NOT FETCHED FROM DB IN EDIT FORM
+
+    * IMPLEMENT SORT BUTTON IN LIST VIEW
+    
+    * PARENT DASHBOARD ISSUES
+
+    * FORMS TO IMPLEMENT:
+        - RESULTS
+        - EVENTS
+        - ANNOUNCEMENTS
+        - LESSONS
+        - PARENTS
+        - ATTENDANCE + WHOLE PAGE & FETCH

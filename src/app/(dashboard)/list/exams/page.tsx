@@ -5,7 +5,6 @@ import TableSearch from "@/components/TableSearch"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
 import { auth } from "@clerk/nextjs/server"
-// import { currentUserId, role } from "@/lib/utils"
 import { Class, Exam, Prisma, Subject, Teacher } from "@prisma/client"
 import Image from "next/image"
 
@@ -145,9 +144,9 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
                 <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-auto'>
                     <TableSearch />
                     <div className='flex items-center gap-4 self-end'>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
+                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
                             <Image src="/filter.png" alt="" width={14} height={14} />
-                        </button>
+                        </button> */}
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
                             <Image src="/sort.png" alt="" width={14} height={14} />
                         </button>

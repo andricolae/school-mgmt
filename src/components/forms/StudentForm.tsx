@@ -38,7 +38,6 @@ const StudentForm = ({
         ? createStudent : updateStudent, { success: false, error: false })
 
     const onSubmit = handleSubmit(data => {
-        // console.log(data);
         formAction({ ...data, img: img?.secure_url });
     })
 

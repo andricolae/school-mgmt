@@ -126,7 +126,7 @@ const SingleTeacherPage = async ({
                         <Link className='p-3 rounded-md bg-purple-200' href={`/list/assignments?teacherId=${"teacher2"}`}>Teacher&apos;s Assignments</Link>
                     </div>
                 </div>
-                <Performance />
+                {/* <Performance /> */}
                 <Announcements />
             </div>
         </div>

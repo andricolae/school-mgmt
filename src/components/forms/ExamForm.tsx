@@ -35,7 +35,6 @@ const ExamForm = ({
         ? createExam : updateExam, { success: false, error: false })
 
     const onSubmit = handleSubmit(data => {
-        // console.log(data);
         data.startTime = new Date(new Date(data.startTime).getTime() + (3 * 60 * 60 * 1000));
         data.endTime = new Date(new Date(data.endTime).getTime() + (3 * 60 * 60 * 1000));
         formAction(data);

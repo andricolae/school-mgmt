@@ -4,10 +4,15 @@ import Table from "@/components/Table"
 import TableSearch from "@/components/TableSearch"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
-import { currentUserId, role } from "@/lib/utils"
+import { auth } from "@clerk/nextjs/server"
+// import { currentUserId, role } from "@/lib/utils"
 import { Class, Event, Prisma } from "@prisma/client"
 import Image from "next/image"
 import Link from "next/link"
+
+const { userId, sessionClaims } = auth();
+export const role = (sessionClaims?.metadata as { role?: string })?.role;
+export const currentUserId = userId;
 
 type EventList = Event & { class: Class };
 

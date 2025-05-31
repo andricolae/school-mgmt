@@ -35,7 +35,9 @@ const ExamForm = ({
         ? createExam : updateExam, { success: false, error: false })
 
     const onSubmit = handleSubmit(data => {
-        console.log(data);
+        // console.log(data);
+        data.startTime = new Date(new Date(data.startTime).getTime() + (3 * 60 * 60 * 1000));
+        data.endTime = new Date(new Date(data.endTime).getTime() + (3 * 60 * 60 * 1000));
         formAction(data);
     })
 
@@ -65,7 +67,7 @@ const ExamForm = ({
                 <InputField
                     label="Start Time"
                     name="startTime"
-                    defaultValue={data?.startTime}
+                    defaultValue={data?.startTime ? new Date(data.startTime).toISOString().slice(0, 16) : undefined}
                     register={register}
                     error={errors?.startTime}
                     type="datetime-local"
@@ -73,7 +75,7 @@ const ExamForm = ({
                 <InputField
                     label="End Time"
                     name="endTime"
-                    defaultValue={data?.endTime}
+                    defaultValue={data?.endTime ? new Date(data.endTime).toISOString().slice(0, 16) : undefined}
                     register={register}
                     error={errors?.endTime}
                     type="datetime-local"

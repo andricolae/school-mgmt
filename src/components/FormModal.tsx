@@ -1,6 +1,6 @@
 "use client"
 
-import { deleteAssignment, deleteClass, deleteEvent, deleteExam, deleteResult, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
+import { deleteAnnouncement, deleteAssignment, deleteAttendance, deleteClass, deleteEvent, deleteExam, deleteLesson, deleteParent, deleteResult, deleteStudent, deleteSubject, deleteTeacher } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -12,14 +12,14 @@ import { FormContainerProps } from "./FormContainer";
 const deleteActionMap = {
     subject: deleteSubject,
     class: deleteClass,
-    lesson: deleteSubject,
+    lesson: deleteLesson,
     exam: deleteExam,
     assignment: deleteAssignment,
     result: deleteResult,
-    attendance: deleteSubject,
+    attendance: deleteAttendance,
     event: deleteEvent,
-    announcement: deleteSubject,
-    parent: deleteSubject,
+    announcement: deleteAnnouncement,
+    parent: deleteParent,
     teacher: deleteTeacher,
     student: deleteStudent,
 }
@@ -48,11 +48,18 @@ const ResultForm = dynamic(() => import("./forms/ResultForm"), {
 const EventForm = dynamic(() => import("./forms/EventForm"), {
     loading: () => <h1>Loading...</h1>
 });
-
-const ParentForm = dynamic(() => import("./forms/ParentForm"));
-const LessonForm = dynamic(() => import("./forms/LessonForm"));
-const AttendanceForm = dynamic(() => import("./forms/AttendanceForm"));
-const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"));
+const ParentForm = dynamic(() => import("./forms/ParentForm"), {
+    loading: () => <h1>Loading...</h1>
+});
+const LessonForm = dynamic(() => import("./forms/LessonForm"), {
+    loading: () => <h1>Loading...</h1>
+});
+const AttendanceForm = dynamic(() => import("./forms/AttendanceForm"), {
+    loading: () => <h1>Loading...</h1>
+});
+const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"), {
+    loading: () => <h1>Loading...</h1>
+});
 
 const forms: {
     [key: string]: (setOpen: Dispatch<SetStateAction<boolean>>, type: "create" | "update", data?: any, relatedData?:any) => JSX.Element;

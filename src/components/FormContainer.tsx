@@ -72,15 +72,6 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
                     parents: studentParents
                 };
                 break;
-            // case "student":
-            //     const studentGrades = await prisma.grade.findMany({
-            //         select: { id: true, level: true },
-            //     });
-            //     const studentClasses = await prisma.class.findMany({
-            //         include: { _count: { select: { students: true } } }
-            //     });
-            //     relatedData = { classes: studentClasses, grades: studentGrades };
-            //     break;
             case "exam":
                 const examLessons = await prisma.lesson.findMany({
                     where: {
@@ -229,6 +220,37 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
                     select: { id: true, name: true, surname: true },
                 });
                 relatedData = { students: availableStudents };
+                break;
+            case "attendance":
+                const attendanceStudents = await prisma.student.findMany({
+                    where: {
+                        ...(role === "teacher" ? {
+                            class: {
+                                lessons: {
+                                    some: {
+                                        teacherId: userId!
+                                    }
+                                }
+                            }
+                        } : {}),
+                    },
+                    select: { id: true, name: true, surname: true, username: true },
+                });
+                const attendanceLessons = await prisma.lesson.findMany({
+                    where: {
+                        ...(role === "teacher" ? { teacherId: userId! } : {}),
+                    },
+                    select: {
+                        id: true,
+                        name: true,
+                        subject: { select: { name: true } },
+                        class: { select: { name: true } }
+                    },
+                });
+                relatedData = {
+                    students: attendanceStudents,
+                    lessons: attendanceLessons
+                };
                 break;
             default:
                 break;

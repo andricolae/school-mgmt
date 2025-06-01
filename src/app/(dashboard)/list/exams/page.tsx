@@ -2,6 +2,7 @@ import FormContainer from "@/components/FormContainer"
 import Pagination from "@/components/Pagination"
 import Table from "@/components/Table"
 import TableSearch from "@/components/TableSearch"
+import SortButton from "@/components/SortButton"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
 import { auth } from "@clerk/nextjs/server"
@@ -44,6 +45,7 @@ const columns = [
         accessor: "actions",
     }] : []),
 ]
+
 const renderRow = (item: ExamList) => (
     <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-skyLight">
         <td className="flex items-center gap-4 p-4">{item.lesson.subject.name}</td>
@@ -54,7 +56,7 @@ const renderRow = (item: ExamList) => (
             <div className="flex items-center gap-2">
                 {(role === "admin" || role === "teacher") && (
                     <>
-                        <FormContainer table="exam" type="delete" id={item.id} />
+                        <FormContainer table="exam" type="delete" data={item} />
                         <FormContainer table="exam" type="update" data={item} />
                     </>
                 )}
@@ -62,13 +64,15 @@ const renderRow = (item: ExamList) => (
         </td>
     </tr>
 )
+
 const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
 
-    const { page, ...queryParams } = searchParams;
+    const { page, sort, ...queryParams } = searchParams;
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.ExamWhereInput = {}
     query.lesson = {};
+    
     if (queryParams) {
         for (const [key, value] of Object.entries(queryParams)) {
             if (value !== undefined) {
@@ -119,6 +123,14 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
             break;
     }
 
+    // Determine sort order
+    let orderBy: any = { startTime: "asc" }; // default - upcoming exams first
+    if (sort) {
+        orderBy = sort === "asc" 
+            ? { lesson: { subject: { name: "asc" } } }
+            : { lesson: { subject: { name: "desc" } } };
+    }
+
     const [data, count] = await prisma.$transaction([
         prisma.exam.findMany({
             where: query,
@@ -131,6 +143,7 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
                     }
                 }
             },
+            orderBy,
             take: ITEM_PER_PAGE,
             skip: ITEM_PER_PAGE * (p - 1)
         }),
@@ -144,12 +157,7 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
                 <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-auto'>
                     <TableSearch />
                     <div className='flex items-center gap-4 self-end'>
-                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
-                            <Image src="/filter.png" alt="" width={14} height={14} />
-                        </button> */}
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
-                            <Image src="/sort.png" alt="" width={14} height={14} />
-                        </button>
+                        <SortButton currentSort={sort} />
                         {(role === "admin" || role === "teacher") && (
                             <FormContainer table="exam" type="create" />
                         )}

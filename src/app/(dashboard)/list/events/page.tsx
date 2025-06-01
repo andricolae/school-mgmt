@@ -1,13 +1,12 @@
 import FormContainer from "@/components/FormContainer"
-import FormModal from "@/components/FormModal"
 import Pagination from "@/components/Pagination"
 import Table from "@/components/Table"
 import TableSearch from "@/components/TableSearch"
+import SortButton from "@/components/SortButton"
 import prisma from "@/lib/prisma"
 import { ITEM_PER_PAGE } from "@/lib/settings"
 import { auth } from "@clerk/nextjs/server"
 import { Class, Event, Prisma } from "@prisma/client"
-import Image from "next/image"
 
 type EventList = Event & { class: Class };
 
@@ -74,7 +73,7 @@ const EventListPage = async ({ searchParams }: { searchParams: { [key: string]: 
         </tr>
     )
 
-    const { page, ...queryParams } = searchParams;
+    const { page, sort, ...queryParams } = searchParams;
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.EventWhereInput = {};
@@ -106,12 +105,18 @@ const EventListPage = async ({ searchParams }: { searchParams: { [key: string]: 
         ];
     }
 
+    let orderBy: any = { startTime: "asc" };
+    if (sort) {
+        orderBy = sort === "asc" ? { title: "asc" } : { title: "desc" };
+    }
+
     const [data, count] = await prisma.$transaction([
         prisma.event.findMany({
             where: query,
             include: {
                 class: true,
             },
+            orderBy,
             take: ITEM_PER_PAGE,
             skip: ITEM_PER_PAGE * (p - 1)
         }),
@@ -125,12 +130,7 @@ const EventListPage = async ({ searchParams }: { searchParams: { [key: string]: 
                 <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-auto'>
                     <TableSearch />
                     <div className='flex items-center gap-4 self-end'>
-                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
-                            <Image src="/filter.png" alt="" width={14} height={14} />
-                        </button> */}
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
-                            <Image src="/sort.png" alt="" width={14} height={14} />
-                        </button>
+                        <SortButton currentSort={sort} />
                         {role === "admin" && (
                             <FormContainer table="event" type="create" />
                         )}

@@ -1,9 +1,8 @@
 import Announcements from "@/components/Announcements"
 import AttendanceChartContainer from "@/components/AttendanceChartContainer"
 import CountChartContainer from "@/components/CountChartContainer"
-import EventCalendar from "@/components/EventCalendar"
 import EventCalendarContainer from "@/components/EventCalendarContainer"
-import FinanceChart from "@/components/FinanceChart"
+import FinanceChartContainer from "@/components/FinanceChartContainer"
 import UserCard from "@/components/UserCard"
 
 const AdminPage = ({ 
@@ -29,7 +28,7 @@ const AdminPage = ({
           </div>
         </div>
         <div className="w-full h-[500px]">
-          <FinanceChart />
+          <FinanceChartContainer />
         </div>
       </div>
       <div className="w-full lg:w-1/3 flex flex-col gap-8">

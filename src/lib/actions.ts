@@ -2,7 +2,7 @@ import { metadata } from './../app/layout';
 "use server"
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { AnnouncementSchema, AssignmentSchema, ClassSchema, EventSchema, ExamSchema, LessonSchema, ParentSchema, ResultSchema, StudentSchema, SubjectSchema, TeacherSchema } from "./formValidationSchemas";
+import { AnnouncementSchema, AssignmentSchema, AttendanceActionData, ClassSchema, EventSchema, ExamSchema, LessonSchema, ParentSchema, ResultSchema, StudentSchema, SubjectSchema, TeacherSchema } from "./formValidationSchemas";
 import prisma from "./prisma";
 
 type CurrentState = { success: boolean; error: boolean }
@@ -876,6 +876,76 @@ export const deleteParent = async (currentState: CurrentState, data: FormData) =
     }
 }
 
+
+export const createAttendance = async (currentState: CurrentState, data: AttendanceActionData) => {
+    const { userId, sessionClaims } = auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+    try {
+        if (role === "teacher") {
+            const teacherLesson = await prisma.lesson.findFirst({
+                where: {
+                    teacherId: userId!,
+                    id: data.lessonId,
+                }
+            });
+            if (!teacherLesson) {
+                return { success: false, error: true };
+            }
+        }
+
+        await prisma.attendance.create({
+            data: {
+                date: data.date,
+                present: data.present,
+                studentId: data.studentId,
+                lessonId: data.lessonId,
+            },
+        });
+        return { success: true, error: false }
+
+    } catch (e) {
+        console.log(e);
+        return { success: false, error: true }
+    }
+}
+
+export const updateAttendance = async (currentState: CurrentState, data: AttendanceActionData) => {
+    const { userId, sessionClaims } = auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+    try {
+        if (role === "teacher") {
+            const teacherLesson = await prisma.lesson.findFirst({
+                where: {
+                    teacherId: userId!,
+                    id: data.lessonId,
+                }
+            });
+            if (!teacherLesson) {
+                return { success: false, error: true };
+            }
+        }
+
+        await prisma.attendance.update({
+            where: {
+                id: data.id,
+            },
+            data: {
+                date: data.date,
+                present: data.present,
+                studentId: data.studentId,
+                lessonId: data.lessonId,
+            },
+        });
+        return { success: true, error: false }
+
+    } catch (e) {
+        console.log(e);
+        return { success: false, error: true }
+    }
+}
+
 export const deleteAttendance = async (currentState: CurrentState, data: FormData) => {
     const id = data.get("id") as string;
     const { userId, sessionClaims } = auth();
@@ -886,11 +956,7 @@ export const deleteAttendance = async (currentState: CurrentState, data: FormDat
             where: {
                 id: parseInt(id),
                 ...(role === "teacher" ? {
-                    class: {
-                        lessons: {
-                            some: { teacherId: userId! }
-                        }
-                    }
+                    lesson: { teacherId: userId! }
                 } : {}),
             },
         });

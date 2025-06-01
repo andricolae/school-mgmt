@@ -525,11 +525,66 @@ export const createResult = async (currentState: CurrentState, data: ResultSchem
     }
 }
 
+// export const updateResult = async (currentState: CurrentState, data: ResultSchema) => {
+//     const { userId, sessionClaims } = auth();
+//     const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+//     try {
+//         if (role === "teacher") {
+//             const teacherLesson = await prisma.lesson.findFirst({
+//                 where: {
+//                     teacherId: userId!,
+//                     OR: [
+//                         { exams: { some: { id: data.examId } } },
+//                         { assignments: { some: { id: data.assignmentId } } }
+//                     ]
+//                 }
+//             });
+//             if (!teacherLesson) {
+//                 return { success: false, error: true };
+//             }
+//         }
+
+//         await prisma.result.update({
+//             where: {
+//                 id: data.id,
+//             },
+//             data: {
+//                 score: data.score,
+//                 studentId: data.studentId,
+//                 ...(data.examId && { examId: data.examId }),
+//                 ...(data.assignmentId && { assignmentId: data.assignmentId }),
+//             },
+//         });
+//         return { success: true, error: false }
+
+//     } catch (e) {
+//         console.log(e);
+//         return { success: false, error: true }
+//     }
+// }
+
 export const updateResult = async (currentState: CurrentState, data: ResultSchema) => {
     const { userId, sessionClaims } = auth();
     const role = (sessionClaims?.metadata as { role?: string })?.role;
 
     try {
+        // Add validation to ensure id exists
+        if (!data.id) {
+            console.error("No ID provided for result update");
+            return { success: false, error: true };
+        }
+
+        // Check if the result exists before attempting update
+        const existingResult = await prisma.result.findUnique({
+            where: { id: data.id }
+        });
+
+        if (!existingResult) {
+            console.error("Result not found with id:", data.id);
+            return { success: false, error: true };
+        }
+
         if (role === "teacher") {
             const teacherLesson = await prisma.lesson.findFirst({
                 where: {
@@ -559,7 +614,7 @@ export const updateResult = async (currentState: CurrentState, data: ResultSchem
         return { success: true, error: false }
 
     } catch (e) {
-        console.log(e);
+        console.error("Error updating result:", e);
         return { success: false, error: true }
     }
 }
@@ -632,6 +687,20 @@ export const updateEvent = async (currentState: CurrentState, data: EventSchema)
     const role = (sessionClaims?.metadata as { role?: string })?.role;
 
     try {
+        if (!data.id) {
+            console.error("No ID provided for event update");
+            return { success: false, error: true };
+        }
+
+        const existingEvent = await prisma.event.findUnique({
+            where: { id: data.id }
+        });
+
+        if (!existingEvent) {
+            console.error("Event not found with id:", data.id);
+            return { success: false, error: true };
+        }
+
         if (role === "teacher" && data.classId) {
             const teacherClass = await prisma.class.findFirst({
                 where: {
@@ -663,7 +732,7 @@ export const updateEvent = async (currentState: CurrentState, data: EventSchema)
         return { success: true, error: false }
 
     } catch (e) {
-        console.log(e);
+        console.error("Error updating event:", e);
         return { success: false, error: true }
     }
 }
@@ -996,11 +1065,56 @@ export const createLesson = async (currentState: CurrentState, data: LessonSchem
     }
 }
 
+// export const updateLesson = async (currentState: CurrentState, data: LessonSchema) => {
+//     const { userId, sessionClaims } = auth();
+//     const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+//     try {
+//         if (role === "teacher" && data.teacherId !== userId) {
+//             return { success: false, error: true };
+//         }
+
+//         await prisma.lesson.update({
+//             where: {
+//                 id: data.id,
+//             },
+//             data: {
+//                 name: data.name,
+//                 day: data.day,
+//                 startTime: data.startTime,
+//                 endTime: data.endTime,
+//                 subjectId: data.subjectId,
+//                 classId: data.classId,
+//                 teacherId: data.teacherId,
+//             },
+//         });
+//         return { success: true, error: false }
+
+//     } catch (e) {
+//         console.log(e);
+//         return { success: false, error: true }
+//     }
+// }
+
 export const updateLesson = async (currentState: CurrentState, data: LessonSchema) => {
     const { userId, sessionClaims } = auth();
     const role = (sessionClaims?.metadata as { role?: string })?.role;
 
     try {
+        if (!data.id) {
+            console.error("No ID provided for lesson update");
+            return { success: false, error: true };
+        }
+
+        const existingLesson = await prisma.lesson.findUnique({
+            where: { id: data.id }
+        });
+
+        if (!existingLesson) {
+            console.error("Lesson not found with id:", data.id);
+            return { success: false, error: true };
+        }
+
         if (role === "teacher" && data.teacherId !== userId) {
             return { success: false, error: true };
         }
@@ -1022,7 +1136,7 @@ export const updateLesson = async (currentState: CurrentState, data: LessonSchem
         return { success: true, error: false }
 
     } catch (e) {
-        console.log(e);
+        console.error("Error updating lesson:", e);
         return { success: false, error: true }
     }
 }

@@ -33,13 +33,14 @@ const EventForm = ({
     const [state, formAction] = useFormState(type === "create"
         ? createEvent : updateEvent, { success: false, error: false })
 
-    const onSubmit = handleSubmit(data => {
-        const formattedData = {
-            ...data,
-            startTime: new Date(new Date(data.startTime).getTime() + (3 * 60 * 60 * 1000)),
-            endTime: new Date(new Date(data.endTime).getTime() + (3 * 60 * 60 * 1000)),
+    const onSubmit = handleSubmit(formData => {
+        const submissionData = {
+            ...formData,
+            ...(type === "update" && data?.id && { id: data.id }),
+            startTime: new Date(new Date(formData.startTime).getTime() + (3 * 60 * 60 * 1000)),
+            endTime: new Date(new Date(formData.endTime).getTime() + (3 * 60 * 60 * 1000)),
         };
-        formAction(formattedData);
+        formAction(submissionData);
     })
 
     const router = useRouter();
@@ -86,6 +87,7 @@ const EventForm = ({
                 <InputField
                     label="Start Time"
                     name="startTime"
+                    defaultValue={data?.startTime ? new Date(data.startTime).toISOString().slice(0, 16) : undefined}
                     register={register}
                     error={errors?.startTime}
                     type="datetime-local"
@@ -94,6 +96,7 @@ const EventForm = ({
                 <InputField
                     label="End Time"
                     name="endTime"
+                    defaultValue={data?.endTime ? new Date(data.endTime).toISOString().slice(0, 16) : undefined}
                     register={register}
                     error={errors?.endTime}
                     type="datetime-local"

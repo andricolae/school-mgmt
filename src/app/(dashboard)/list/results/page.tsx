@@ -126,7 +126,7 @@ const ResultListPage = async ({
             }
         }
     }
-    
+
     switch (role) {
         case "admin":
             break;
@@ -155,7 +155,7 @@ const ResultListPage = async ({
         { exam: { startTime: "desc" } },
         { assignment: { startDate: "desc" } }
     ];
-    
+
     // For sorting by title/student name, we'll sort the transformed data later
     const shouldSortTransformed = sort !== undefined;
 
@@ -209,15 +209,17 @@ const ResultListPage = async ({
             score: item.score,
             className: assessment.lesson.class.name,
             startTime: isExam ? assessment.startTime : assessment.startDate,
+            studentId: item.studentId,
+            examId: item.examId,
+            assignmentId: item.assignmentId,
         };
     }).filter(Boolean) as ResultList[];
 
-    // Apply sorting to transformed data if needed
     if (shouldSortTransformed && sort) {
         data.sort((a, b) => {
             const aValue = a.title.toLowerCase();
             const bValue = b.title.toLowerCase();
-            
+
             if (sort === "asc") {
                 return aValue.localeCompare(bValue);
             } else {

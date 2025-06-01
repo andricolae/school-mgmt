@@ -1,6 +1,6 @@
-#############################################################
-###############           DEPLOYMENT          ###############
-#############################################################
+########################################################################
+###################            DEPLOYMENT           ####################
+########################################################################
     
     * 6:01:10
 
@@ -8,18 +8,12 @@
 ###################          VARIOUS BUGS           ####################
 ########################################################################
    
-    * FINANCE DASHBOARD ?!
-
-    * ANNOUNCEMENTS CARD DISPLAY LOGIC ACCORDING TO THE DATE
-
     * TEACHER EDIT FORM NOT FETCHING GENDER AND CLASSES
 
-    * SEED SYNCED WITH CLERK FOR DEMO USABILITY
+    * PARENT DASHBOARD ISSUES
 
     * IMPLEMENT SORT BUTTON IN LIST VIEW
-    
-    * PARENT DASHBOARD ISSUES
 
     * SOME FORMS DO NOT PRELOAD WITH DB CONTENT AT UPDATE
 
-    * FUNCTIONALITY FOR TEACHERS TO BULK UPDATE THE PRESENCE FOR A CLASS
+    * SEED SYNCED WITH CLERK FOR DEMO USABILITY

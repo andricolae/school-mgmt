@@ -8,8 +8,4 @@
 ###################          VARIOUS BUGS           ####################
 ########################################################################
    
-    * EVENTS NOT FETCHING START TIME, END TIME AND CLASS IN THE UPDATE FORM
-    * LESSONS NOT FETCHING SUBJECT, CLASS AND TEACHER AT UPDATE FORM
-    * RESULTS NOT FETCHING STUDENTS AND EXAM/ASSIGNMENT AT UPDATE
-    
     * DASHBOARD ISSUES -> POSSIBLE SOLVE: SEED SYNCED WITH CLERK FOR DEMO USABILITY

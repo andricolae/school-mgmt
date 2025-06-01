@@ -32,13 +32,14 @@ const LessonForm = ({
     const [state, formAction] = useFormState(type === "create"
         ? createLesson : updateLesson, { success: false, error: false })
 
-    const onSubmit = handleSubmit(data => {
-        const formattedData = {
-            ...data,
-            startTime: new Date(new Date(data.startTime).getTime() + (3 * 60 * 60 * 1000)),
-            endTime: new Date(new Date(data.endTime).getTime() + (3 * 60 * 60 * 1000)),
+    const onSubmit = handleSubmit(formData => {
+        const submissionData = {
+            ...formData,
+            ...(type === "update" && data?.id && { id: data.id }),
+            startTime: new Date(new Date(formData.startTime).getTime() + (3 * 60 * 60 * 1000)),
+            endTime: new Date(new Date(formData.endTime).getTime() + (3 * 60 * 60 * 1000)),
         };
-        formAction(formattedData);
+        formAction(submissionData);
     })
 
     const router = useRouter();
@@ -52,6 +53,8 @@ const LessonForm = ({
     }, [state]);
 
     const { subjects, classes, teachers } = relatedData || {};
+
+    console.log("Lesson form data received:", data);
 
     return (
         <form className="flex flex-col gap-8" onSubmit={onSubmit}>
@@ -70,8 +73,8 @@ const LessonForm = ({
                     <label className="text-xs text-gray-400">Day</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+                        defaultValue={data?.day || ""}
                         {...register("day")}
-                        defaultValue={data?.day}
                     >
                         <option value="">Select a day</option>
                         <option value="MONDAY">Monday</option>
@@ -90,7 +93,10 @@ const LessonForm = ({
                 <InputField
                     label="Start Time"
                     name="startTime"
-                    defaultValue={data?.startTime ? new Date(data.startTime).toISOString().slice(0, 16) : undefined}
+                    defaultValue={data?.startTime ? 
+                        new Date(data.startTime).toISOString().slice(0, 16) : 
+                        undefined
+                    }
                     register={register}
                     error={errors?.startTime}
                     type="datetime-local"
@@ -99,7 +105,10 @@ const LessonForm = ({
                 <InputField
                     label="End Time"
                     name="endTime"
-                    defaultValue={data?.endTime ? new Date(data.endTime).toISOString().slice(0, 16) : undefined}
+                    defaultValue={data?.endTime ? 
+                        new Date(data.endTime).toISOString().slice(0, 16) : 
+                        undefined
+                    }
                     register={register}
                     error={errors?.endTime}
                     type="datetime-local"
@@ -120,8 +129,8 @@ const LessonForm = ({
                     <label className="text-xs text-gray-400">Subject</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+                        defaultValue={data?.subjectId || data?.subject?.id || ""}
                         {...register("subjectId")}
-                        defaultValue={data?.subject?.id}
                     >
                         <option value="">Select a subject</option>
                         {subjects?.map(
@@ -143,8 +152,8 @@ const LessonForm = ({
                     <label className="text-xs text-gray-400">Class</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+                        defaultValue={data?.classId || data?.class?.id || ""}
                         {...register("classId")}
-                        defaultValue={data?.class?.id}
                     >
                         <option value="">Select a class</option>
                         {classes?.map(
@@ -166,8 +175,8 @@ const LessonForm = ({
                     <label className="text-xs text-gray-400">Teacher</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+                        defaultValue={data?.teacherId || data?.teacher?.id || ""}
                         {...register("teacherId")}
-                        defaultValue={data?.teacher?.id}
                     >
                         <option value="">Select a teacher</option>
                         {teachers?.map(

@@ -31,34 +31,27 @@ const ResultForm = ({
         reset
     } = useForm<ResultSchema>({
         resolver: zodResolver(resultSchema),
+        defaultValues: type === "update" && data ? {
+            id: data.id,
+            score: data.score,
+            studentId: data.studentId || "",
+            examId: data.examId || undefined,
+            assignmentId: data.assignmentId || undefined,
+        } : {}
     });
 
-    useEffect(() => {
-        if (type === "update" && data) {
-            console.log("Resetting form with data:", data);
-            reset({
-                id: data.id,
-                score: data.score,
-                studentId: data.studentId || "",
-                examId: data.examId || undefined,
-                assignmentId: data.assignmentId || undefined,
-            });
-        }
-    }, [data, reset, type]);
-
-    console.log("Form values:", {
-        studentId: watch("studentId"),
-        examId: watch("examId"),
-        assignmentId: watch("assignmentId"),
-        data: data
-    });
+    console.log("Form data received:", data);
 
     const [state, formAction] = useFormState(type === "create"
         ? createResult : updateResult, { success: false, error: false })
 
-    const onSubmit = handleSubmit(data => {
-        console.log(data);
-        formAction(data);
+    const onSubmit = handleSubmit(formData => {
+        const submissionData = {
+            ...formData,
+            ...(type === "update" && data?.id && { id: data.id }),
+        };
+        console.log("Submitting data:", submissionData);
+        formAction(submissionData);
     })
 
     const router = useRouter();
@@ -103,6 +96,7 @@ const ResultForm = ({
                     <label className="text-xs text-gray-400">Student</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+                        defaultValue={data?.studentId || ""}
                         {...register("studentId")}
                     >
                         <option value="">Select a student</option>
@@ -125,6 +119,7 @@ const ResultForm = ({
                     <label className="text-xs text-gray-400">Exam (Optional)</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+                        defaultValue={data?.examId || ""}
                         {...register("examId")}
                     >
                         <option value="">Select an exam</option>
@@ -147,6 +142,7 @@ const ResultForm = ({
                     <label className="text-xs text-gray-400">Assignment (Optional)</label>
                     <select
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+                        defaultValue={data?.assignmentId || ""}
                         {...register("assignmentId")}
                     >
                         <option value="">Select an assignment</option>

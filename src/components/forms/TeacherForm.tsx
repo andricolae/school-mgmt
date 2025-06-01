@@ -30,6 +30,20 @@ const TeacherForm = ({
         formState: { errors },
     } = useForm<TeacherSchema>({
         resolver: zodResolver(teacherSchema),
+        defaultValues: {
+            id: data?.id,
+            username: data?.username,
+            name: data?.name,
+            surname: data?.surname,
+            email: data?.email,
+            phone: data?.phone,
+            address: data?.address,
+            bloodType: data?.bloodType,
+            gender: data?.gender,
+            birthday: data?.birthday,
+            subjects: data.subjects?.map((subject: any) => subject.id.toString()) || [],
+
+        }
     });
 
     const [img, setImg] = useState<any>()
@@ -129,17 +143,17 @@ const TeacherForm = ({
                 />
                 {data && (
                     <InputField
-                    label="Id"
-                    name="id"
-                    defaultValue={data?.id}
-                    register={register}
-                    error={errors?.id}
-                    hidden
+                        label="Id"
+                        name="id"
+                        defaultValue={data?.id}
+                        register={register}
+                        error={errors?.id}
+                        hidden
                     />
                 )}
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
                     <label className="text-xs text-gray-400">Gender</label>
-                    <select className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full" {...register("gender")} defaultValue={data?.gender}>
+                    <select className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full" {...register("gender")}>
                         <option value="FEMALE">Female</option>
                         <option value="MALE">Male</option>
                         <option value="OTHER">Other</option>
@@ -152,7 +166,6 @@ const TeacherForm = ({
                         multiple
                         className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
                         {...register("subjects")}
-                        defaultValue={data?.subjects}
                     >
                         {subjects.map((subject: { id: number; name: string }) => (
                             <option value={subject.id} key={subject.id}>

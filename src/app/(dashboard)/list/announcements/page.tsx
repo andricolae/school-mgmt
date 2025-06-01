@@ -5,8 +5,8 @@ import TableSearch from "@/components/TableSearch";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { Announcement, Class, Prisma } from "@prisma/client";
-import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
+import SortButton from "@/components/SortButton";
 
 type AnnouncementList = Announcement & { class: Class };
 const AnnouncementListPage = async ({
@@ -46,7 +46,7 @@ const AnnouncementListPage = async ({
     const renderRow = (item: AnnouncementList) => (
         <tr
             key={item.id}
-            className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
+            className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-skyLight"
         >
             <td className="flex items-center gap-4 p-4">{item.title}</td>
             <td>{item.class?.name || "-"}</td>
@@ -65,7 +65,7 @@ const AnnouncementListPage = async ({
             </td>
         </tr>
     );
-    const { page, ...queryParams } = searchParams;
+    const { page, sort, ...queryParams } = searchParams;
 
     const p = page ? parseInt(page) : 1;
 
@@ -96,9 +96,14 @@ const AnnouncementListPage = async ({
         { class: roleConditions[role as keyof typeof roleConditions] || {}, },
     ];
 
+    let orderBy: any = { date: "desc" }; // default
+    if (sort) {
+        orderBy = sort === "asc" ? { title: "asc" } : { title: "desc" };
+    }
+
     const [data, count] = await prisma.$transaction([
         prisma.announcement.findMany({
-            orderBy: { date: "desc" },
+            orderBy,
             where: {
                 ...(role !== "admin" && {
                     OR: [
@@ -134,12 +139,13 @@ const AnnouncementListPage = async ({
                 <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
                     <TableSearch />
                     <div className="flex items-center gap-4 self-end">
-                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
                             <Image src="/filter.png" alt="" width={14} height={14} />
                         </button> */}
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+                        {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow">
                             <Image src="/sort.png" alt="" width={14} height={14} />
-                        </button>
+                        </button> */}
+                        <SortButton currentSort={sort} />
                         {role === "admin" && (
                             <FormContainer table="announcement" type="create" />
                         )}

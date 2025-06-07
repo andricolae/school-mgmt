@@ -76,7 +76,7 @@ const ResultListPage = async ({
     const renderRow = (item: ResultList) => (
         <tr
             key={item.id}
-            className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
+            className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-skyLight"
         >
             <td className="flex items-center gap-4 p-4">{item.title}</td>
             <td>{item.studentName + " " + item.studentSurname}</td>
@@ -150,13 +150,11 @@ const ResultListPage = async ({
             break;
     }
 
-    // Determine sort order - we need to handle this differently since we transform the data
     let orderBy: any = [
         { exam: { startTime: "desc" } },
         { assignment: { startDate: "desc" } }
     ];
 
-    // For sorting by title/student name, we'll sort the transformed data later
     const shouldSortTransformed = sort !== undefined;
 
     const [dataRes, count] = await prisma.$transaction([

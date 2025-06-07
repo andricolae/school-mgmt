@@ -180,16 +180,6 @@ export const parentSchema = z.object({
 
 export type ParentSchema = z.infer<typeof parentSchema>;
 
-// export const attendanceSchema = z.object({
-//     id: z.coerce.number().optional(),
-//     date: z.coerce.date({ message: "Date is required" }),
-//     present: z.coerce.boolean({ message: "Attendance status is required" }),
-//     studentId: z.string().min(1, { message: "Student is required" }),
-//     lessonId: z.coerce.number({ message: "Lesson is required" }),
-// });
-
-// export type AttendanceSchema = z.infer<typeof attendanceSchema>;
-
 export const attendanceSchema = z.object({
     id: z.coerce.number().optional(),
     date: z.coerce.date({ message: "Date is required" }),

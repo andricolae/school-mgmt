@@ -67,8 +67,7 @@ const SubjectListPage = async ({ searchParams }: { searchParams: { [key: string]
         }
     }
 
-    // Determine sort order
-    let orderBy: any = { name: "asc" }; // default - alphabetical by subject name
+    let orderBy: any = { name: "asc" };
     if (sort) {
         orderBy = sort === "asc" 
             ? { name: "asc" }

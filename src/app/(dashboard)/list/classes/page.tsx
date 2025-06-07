@@ -84,8 +84,7 @@ const ClassListPage = async ({ searchParams }: { searchParams: { [key: string]: 
         }
     }
 
-    // Determine sort order
-    let orderBy: any = { name: "asc" }; // default - alphabetical by class name
+    let orderBy: any = { name: "asc" }; 
     if (sort) {
         orderBy = sort === "asc" 
             ? { name: "asc" }

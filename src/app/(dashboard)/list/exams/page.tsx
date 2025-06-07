@@ -123,8 +123,7 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
             break;
     }
 
-    // Determine sort order
-    let orderBy: any = { startTime: "asc" }; // default - upcoming exams first
+    let orderBy: any = { startTime: "asc" };
     if (sort) {
         orderBy = sort === "asc" 
             ? { lesson: { subject: { name: "asc" } } }

@@ -124,8 +124,7 @@ const AssignmentListPage = async ({ searchParams }: { searchParams: { [key: stri
             break;
     }
 
-    // Determine sort order
-    let orderBy: any = { dueDate: "asc" }; // default - upcoming assignments first
+    let orderBy: any = { dueDate: "asc" }; 
     if (sort) {
         orderBy = sort === "asc" 
             ? { lesson: { subject: { name: "asc" } } }

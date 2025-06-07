@@ -37,7 +37,6 @@ const AssignmentForm = ({
         ? createAssignment : updateAssignment, { success: false, error: false })
 
     const onSubmit = handleSubmit(data => {
-        // console.log(data);
         const formattedData = {
             ...data,
             startDate: new Date(data.startDate),

@@ -32,14 +32,6 @@ const AttendanceForm = ({
     const [state, formAction] = useFormState(type === "create"
         ? createAttendance : updateAttendance, { success: false, error: false })
 
-    // const onSubmit = handleSubmit(data => {
-    //     const formattedData = {
-    //         ...data,
-    //         date: new Date(data.date)
-    //     };
-    //     formAction(formattedData);
-    // })
-
     const onSubmit = handleSubmit((formData) => {
         const actionData = {
             id: formData.id,

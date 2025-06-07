@@ -127,13 +127,6 @@ const StudentForm = ({
                     register={register}
                     error={errors?.birthday}
                 />
-                {/* <InputField
-                    label="Parent Id"
-                    name="parentId"
-                    defaultValue={data?.parentId}
-                    register={register}
-                    error={errors?.parentId}
-                /> */}
                 <div className="flex flex-col gap-2 w-full md:w-1/4">
                     <label className="text-xs text-gray-400">Parent</label>
                     <select

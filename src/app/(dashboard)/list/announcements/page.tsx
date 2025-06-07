@@ -96,7 +96,7 @@ const AnnouncementListPage = async ({
         { class: roleConditions[role as keyof typeof roleConditions] || {}, },
     ];
 
-    let orderBy: any = { date: "desc" }; // default
+    let orderBy: any = { date: "desc" };
     if (sort) {
         orderBy = sort === "asc" ? { title: "asc" } : { title: "desc" };
     }

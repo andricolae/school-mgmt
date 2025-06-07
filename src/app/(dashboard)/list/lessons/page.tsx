@@ -83,8 +83,7 @@ const LessonListPage = async ({ searchParams }: { searchParams: { [key: string]:
         }
     }
 
-    // Determine sort order
-    let orderBy: any = { subject: { name: "asc" } }; // default - alphabetical by subject
+    let orderBy: any = { subject: { name: "asc" } };
     if (sort) {
         orderBy = sort === "asc" 
             ? { subject: { name: "asc" } }

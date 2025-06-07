@@ -150,13 +150,11 @@ const ResultListPage = async ({
             break;
     }
 
-    // Determine sort order - we need to handle this differently since we transform the data
     let orderBy: any = [
         { exam: { startTime: "desc" } },
         { assignment: { startDate: "desc" } }
     ];
 
-    // For sorting by title/student name, we'll sort the transformed data later
     const shouldSortTransformed = sort !== undefined;
 
     const [dataRes, count] = await prisma.$transaction([

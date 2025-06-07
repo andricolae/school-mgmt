@@ -1,7 +1,5 @@
 # 🏫 School Management System
 
-[![Deployment Status](https://img.shields.io/badge/deployment-active-brightgreen)](https://mgmt-sys.vercel.app/dashboard/admin)
-
 ![Next.js](https://img.shields.io/badge/Next.js-14.2.5-black?style=for-the-badge&logo=next.js)
 ![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)

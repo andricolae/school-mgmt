@@ -117,6 +117,9 @@ Ensure you have the following installed:
 - Cloudinary account for media management
 - Clerk account for authentication
 
+> [!NOTE]
+> All these services must be properly configured before the application can function correctly.
+
 ### Installation
 
 1. Clone the repository:
@@ -158,7 +161,10 @@ CLOUDINARY_API_SECRET="your_api_secret"
 NEXTAUTH_SECRET="your_nextauth_secret"
 ```
 
-5. Database setup:
+> [!CAUTION]
+> Never commit your .env or environment.ts file to version control. These files contain sensitive API keys and credentials that should remain private.
+
+4. Database setup:
 
 ```bash
 # Generate prisma client
@@ -179,7 +185,8 @@ npm run dev
 yarn dev
 ```
 
-6. Access the application by visiting http://localhost:3000 in your browser.
+> [!NOTE]
+> Access the application by visiting http://localhost:3000 in your browser.
 
 ## 📁 Project Structure
 
@@ -308,6 +315,9 @@ export default clerkMiddleware((auth, req) => {
 * Commit your changes (git commit -m 'Add some amazing feature')
 * Push to the branch (git push origin feature/amazing-feature)
 * Open a Pull Request
+
+> [!IMPORTANT]
+> Always create a new branch from develop for your features, not from main.
 
 #### Development Guidelines
 

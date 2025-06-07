@@ -136,7 +136,44 @@ npm install
 yarn install
 ```
 
-3. Start the development server:
+3. 🔒 Environment Configuration
+Create a .env file in the root directory
+
+```bash
+# Database Configuration
+DATABASE_URL="postgresql://username:password@localhost:5432/school_mgmt"
+
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_..."
+CLERK_SECRET_KEY="sk_test_..."
+NEXT_PUBLIC_CLERK_SIGN_IN_URL="/sign-in"
+NEXT_PUBLIC_CLERK_SIGN_UP_URL="/sign-up"
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL="/dashboard"
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL="/dashboard"
+
+# Cloudinary Configuration
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="your_cloud_name"
+NEXT_PUBLIC_CLOUDINARY_API_KEY="your_api_key"
+CLOUDINARY_API_SECRET="your_api_secret"
+
+# Application Security
+NEXTAUTH_SECRET="your_nextauth_secret"
+```
+
+5. Database setup:
+
+```bash
+# Generate prisma client
+npx prisma generate
+
+# Run database migration
+npx prisma migrate dev --[name] init
+
+# Seed the database with sample data
+npx prisma db seed
+```
+
+5. Start the development server:
 
 ```bash
 npm run dev
@@ -144,52 +181,126 @@ npm run dev
 yarn dev
 ```
 
-4. Open http://localhost:3000 in your browser to see the application.
+6. Access the application by visiting http://localhost:3000 in your browser.
 
 ## 📁 Project Structure
 
 ```
-├── public/             # Static assets
+school-management-system/
+├── prisma/                    # Database configuration
+│   ├── migrations/           # Database migration files
+│   ├── schema.prisma        # Database schema definition
+│   └── seed.ts              # Database seeding script
 ├── src/
-│   ├── app/            # Pages and layouts
-│   │   ├── dashboard/  # Dashboard pages for different user roles
-│   │   ├── layout.tsx  # Root layout
-│   │   └── page.tsx    # Homepage
-│   ├── components/     # Reusable UI components
-│   │   ├── Menu.tsx    # Navigation menu
-│   │   ├── Charts/     # Data visualization components
-│   │   └── ...
-│   ├── lib/            # Utility functions and data
-│   └── styles/         # Global CSS and styling
-└── package.json        # Project dependencies and scripts
+│   ├── app/                 # Next.js App Router
+│   │   ├── (dashboard)/     # Protected dashboard routes
+│   │   │   ├── admin/      # Admin-specific pages
+│   │   │   ├── teacher/    # Teacher-specific pages
+│   │   │   ├── student/    # Student-specific pages
+│   │   │   ├── parent/     # Parent-specific pages
+│   │   │   ├── list/       # CRUD operations for entities
+│   │   │   └── layout.tsx  # Dashboard layout component
+│   │   ├── api/            # API route handlers
+│   │   ├── globals.css     # Global styles and Tailwind directives
+│   │   └── layout.tsx      # Root layout with providers
+│   ├── components/         # Reusable UI components
+│   │   ├── forms/         # Form components with validation
+│   │   ├── charts/        # Data visualization components
+│   │   └── ui/           # Base UI components
+│   ├── lib/               # Utility functions and configurations
+│   │   ├── actions.ts     # Server actions for data mutations
+│   │   ├── prisma.ts      # Prisma client configuration
+│   │   ├── utils.ts       # Helper functions
+│   │   └── validations.ts # Zod schema definitions
+│   └── middleware.ts      # Clerk authentication middleware
+├── public/               # Static assets and images
+├── docker-compose.yml   # Docker configuration for development
+├── next.config.mjs     # Next.js configuration
+├── tailwind.config.ts  # Tailwind CSS configuration
+└── tsconfig.json      # TypeScript configuration
 ```
 
-## 👥 User Roles
+## 👥 User Roles & Permissions
 
 The system supports the following user roles:
 
-- **Administrator:** Complete access to all system features
-- **Teacher:** Access to class management, student data, and teaching resources
-- **Student:** View assignments, timetable, results, and communicate with teachers
-- **Parent:** Monitor child's progress, attendance, and communicate with teachers
+### Administrator
 
-## 🔒 Environment Variables
+- Complete system access and configuration
+- User management across all roles
+- Financial and academic reporting
+- System settings and maintenance
 
-Create a .env.local file with the following variables
+### Teacher
 
-```bash
-NEXT_PUBLIC_API_URL=your_api_url
-DATABASE_URL=your_database_connection_string
+- Class and student management within assigned classes
+- Lesson planning and assessment creation
+- Attendance tracking and grade management
+- Communication with students and parents
+
+### Student
+
+- Personal dashboard with schedule and grades
+- Assignment and exam viewing
+- Performance tracking and analytics
+- Communication with teachers
+
+### Parent
+
+- Child progress monitoring and attendance tracking
+- Communication with teachers and school
+- Event and announcement viewing
+- Academic performance reports
+
+## 🔧 Advanced Configuration
+
+### Database Optimization
+
+The application uses Prisma with PostgreSQL for optimal performance:
+```javascript
+// Connection pooling configuration
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Optimized queries with relations
+include: {
+  _count: { select: { students: true } },
+  students: { select: { name: true, surname: true } }
+}
 ```
 
-## 🧪 Testing
+### Authentication Flow
 
-```bash
-# Run tests
-npm test
-# or
-yarn test
+Clerk middleware provides seamless authentication:
+```javascript
+// Automatic route protection
+export default clerkMiddleware((auth, req) => {
+  const { sessionClaims } = auth();
+  const role = sessionClaims?.metadata?.role;
+  
+  // Role-based redirects
+  if (!allowedRoles.includes(role)) {
+    return NextResponse.redirect(new URL(`/${role}`, req.url));
+  }
+});
 ```
+
+## Performance Features
+
+- **Image Optimization**: Cloudinary automatic optimization and responsive delivery
+- **Caching Strategy**: Next.js static generation with revalidation
+- **Bundle Optimization**: Code splitting and lazy loading
+- **Database Indexing**: Optimized queries with proper indexing
+
+## 🔒 Security Features
+
+- **Role-Based Access Control**: Granular permissions for different user types
+- **Input Validation**: Zod schemas for client and server-side validation
+- **CSRF Protection**: Built-in Next.js security measures
+- **Secure Authentication**: Clerk-provided security best practices
+- **Environment Protection**: Secure environment variable handling
 
 ## 🤝 Contributing
 
@@ -200,9 +311,23 @@ yarn test
 * Push to the branch (git push origin feature/amazing-feature)
 * Open a Pull Request
 
+#### Development Guidelines
+
+Use TypeScript for all new code
+Follow the existing component structure
+Implement proper error handling
+Add appropriate loading states
+Ensure responsive design compatibility
+
 ## 📜 License
 
 Distributed under the MIT License. See LICENSE for more information.
+
+## 📞 Support & Community
+
+- **GitHub Issues**: Report bugs and request features
+- **Documentation**: Comprehensive guides and API documentation
+- **Community**: Join our community discussions
 
 ## 📞 Contact
 
@@ -214,3 +339,8 @@ Project Link: https://github.com/andricolae/school-mgmt
 [Tailwind CSS](https://tailwindcss.com/)
 [Recharts](https://recharts.org/)
 [React Big Calendar](https://github.com/jquense/react-big-calendar)
+[Clerk Auth](https://clerk.com/)
+[Prisma ORM](https://www.prisma.io/)
+[Cloudinary](https://cloudinary.com/)
+
+### Built with ❤️ for the education community

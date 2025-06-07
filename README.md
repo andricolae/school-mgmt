@@ -4,6 +4,9 @@
 ![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.1-38B2AC?style=for-the-badge&logo=tailwind-css)
+![Clerk Auth](https://img.shields.io/badge/Clerk_Auth-6.21.0-5A67D8?style=for-the-badge&logo=clerk)
+![PostgresSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=for-the-badge&logo=postgresql)
+![Prisma ORM](https://img.shields.io/badge/Prisma-6.7.0-2D3748?style=for-the-badge&logo=prisma)
 
 A comprehensive school management application built with modern web technologies, featuring role-based dashboards, real-time data management, and advanced authentication. Designed to streamline administrative tasks and enhance communication between teachers, students, and parents.
 

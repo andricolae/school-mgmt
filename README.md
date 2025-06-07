@@ -7,7 +7,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.1-38B2AC?style=for-the-badge&logo=tailwind-css)
 
-A comprehensive school management application built with modern web technologies, featuring role-based dashboards, real-time data management, and advanced authentication. Designed to streamline administrative tasks and enhance communication between teachers, students, and parents. Inspired by lamadev.
+A comprehensive school management application built with modern web technologies, featuring role-based dashboards, real-time data management, and advanced authentication. Designed to streamline administrative tasks and enhance communication between teachers, students, and parents.
 
 ## 📋 Overview
 

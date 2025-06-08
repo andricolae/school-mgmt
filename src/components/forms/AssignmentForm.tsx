@@ -31,8 +31,6 @@ const AssignmentForm = ({
         resolver: zodResolver(assignmentSchema),
     });
 
-    console.log("AssignmentForm rendered with:", { type, data, relatedData });
-
     const [state, formAction] = useFormState(type === "create"
         ? createAssignment : updateAssignment, { success: false, error: false })
 
@@ -54,8 +52,6 @@ const AssignmentForm = ({
             router.refresh();
         }
     }, [state]);
-
-    console.log("related data = ", relatedData);
 
     const { lessons } = relatedData;
 

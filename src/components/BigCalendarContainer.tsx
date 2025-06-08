@@ -12,7 +12,7 @@ const BigCalendarContainer = async (
 
     const dataRes = await prisma.lesson.findMany({
         where: {
-            ...(type === "teacherId" 
+            ...(type === "teacherId"
                 ? { teacherId: id as string }
                 : { classId: id as number }),
         },
@@ -20,14 +20,14 @@ const BigCalendarContainer = async (
 
     const data = dataRes.map(lesson => ({
         title: lesson.name,
-        start: lesson.startTime,
-        end: lesson.endTime,
+        start: new Date(new Date(lesson.startTime).getTime() - 3 * 60 * 60 * 1000),
+        end: new Date(new Date(lesson.endTime).getTime() - 3 * 60 * 60 * 1000),
     }));
 
     const schedule = adjustScheduleToCurrentWeek(data);
 
     return (
-        <div className=''><BigCalendar data={schedule} /></div>
+        <div className=''><BigCalendar data={data} /></div>
     )
 }
 

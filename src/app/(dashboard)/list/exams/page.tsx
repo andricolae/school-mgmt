@@ -56,7 +56,7 @@ const renderRow = (item: ExamList) => (
             <div className="flex items-center gap-2">
                 {(role === "admin" || role === "teacher") && (
                     <>
-                        <FormContainer table="exam" type="delete" data={item} />
+                        <FormContainer table="exam" type="delete" id={item.id} />
                         <FormContainer table="exam" type="update" data={item} />
                     </>
                 )}

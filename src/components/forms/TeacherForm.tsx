@@ -41,8 +41,7 @@ const TeacherForm = ({
             bloodType: data?.bloodType,
             gender: data?.gender,
             birthday: data?.birthday,
-            subjects: data.subjects?.map((subject: any) => subject.id.toString()) || [],
-
+            subjects: data?.subjects?.map((subject: any) => subject.id.toString()) || [],
         }
     });
 

@@ -31,7 +31,7 @@ export const adjustScheduleToCurrentWeek = (
         const adjustedStartDate = new Date(startOfWeek);
         adjustedStartDate.setDate(startOfWeek.getDate() + daysFromMonday);
 
-        const correctedHours = lessonStart.getHours() - 3;
+        const correctedHours = lessonStart.getHours();
         const originalMinutes = lessonStart.getMinutes();
 
         adjustedStartDate.setHours(correctedHours, originalMinutes, 0, 0);

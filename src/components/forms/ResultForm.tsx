@@ -40,8 +40,6 @@ const ResultForm = ({
         } : {}
     });
 
-    console.log("Form data received:", data);
-
     const [state, formAction] = useFormState(type === "create"
         ? createResult : updateResult, { success: false, error: false })
 
@@ -50,7 +48,6 @@ const ResultForm = ({
             ...formData,
             ...(type === "update" && data?.id && { id: data.id }),
         };
-        console.log("Submitting data:", submissionData);
         formAction(submissionData);
     })
 

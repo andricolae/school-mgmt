@@ -54,8 +54,6 @@ const LessonForm = ({
 
     const { subjects, classes, teachers } = relatedData || {};
 
-    console.log("Lesson form data received:", data);
-
     return (
         <form className="flex flex-col gap-8" onSubmit={onSubmit}>
             <h1 className="text-cl font-semibold">{type === "create" ? "Create a new lesson" : "Update the lesson"}</h1>

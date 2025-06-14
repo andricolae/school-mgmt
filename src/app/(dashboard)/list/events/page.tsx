@@ -64,8 +64,8 @@ const EventListPage = async ({ searchParams }: { searchParams: { [key: string]: 
                 <div className="flex items-center gap-2">
                     {role === "admin" && (
                         <>
-                            <FormContainer table="event" type="update" data={item} />
                             <FormContainer table="event" type="delete" id={item.id} />
+                            <FormContainer table="event" type="update" data={item} />
                         </>
                     )}
                 </div>

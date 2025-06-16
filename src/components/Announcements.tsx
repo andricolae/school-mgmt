@@ -12,7 +12,6 @@ const Announcements = async () => {
     }
 
     const data = await prisma.announcement.findMany({
-        // take: 3,
         orderBy: { date: "desc" },
         where: {
             ...(role !== "admin" && {

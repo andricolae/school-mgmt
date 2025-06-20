@@ -44,7 +44,7 @@ const ParentForm = ({
             setOpen(false);
             router.refresh();
         }
-    }, [state]);
+    }, [state, router, type, setOpen]);
 
     const { students } = relatedData || {};
 

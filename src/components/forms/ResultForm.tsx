@@ -59,7 +59,7 @@ const ResultForm = ({
             setOpen(false);
             router.refresh();
         }
-    }, [state]);
+    }, [state, router, type, setOpen]);
 
     const { students, exams, assignments } = relatedData;
 

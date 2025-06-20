@@ -9,10 +9,6 @@ import { auth } from "@clerk/nextjs/server"
 import { Class, Exam, Prisma, Subject, Teacher } from "@prisma/client"
 import Image from "next/image"
 
-const { userId, sessionClaims } = auth();
-export const role = (sessionClaims?.metadata as { role?: string })?.role;
-export const currentUserId = userId;
-
 type ExamList = Exam & {
     lesson: {
         subject: Subject,
@@ -20,59 +16,63 @@ type ExamList = Exam & {
         teacher: Teacher
     }
 }
-
-const columns = [
-    {
-        header: "Subject Name",
-        accessor: "name",
-    },
-    {
-        header: "Class",
-        accessor: "class",
-    },
-    {
-        header: "Teacher",
-        accessor: "teacher",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Date",
-        accessor: "date",
-        className: "hidden md:table-cell",
-    },
-    ...(role === "admin" || role === "teacher" ? [{
-        header: "Actions",
-        accessor: "actions",
-    }] : []),
-]
-
-const renderRow = (item: ExamList) => (
-    <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-skyLight">
-        <td className="flex items-center gap-4 p-4">{item.lesson.subject.name}</td>
-        <td>{item.lesson.class.name}</td>
-        <td className="hidden md:table-cell">{item.lesson.teacher.name + " " + item.lesson.teacher.surname}</td>
-        <td className="hidden md:table-cell">{new Intl.DateTimeFormat("en-UK").format(item.startTime)}</td>
-        <td>
-            <div className="flex items-center gap-2">
-                {(role === "admin" || role === "teacher") && (
-                    <>
-                        <FormContainer table="exam" type="delete" id={item.id} />
-                        <FormContainer table="exam" type="update" data={item} />
-                    </>
-                )}
-            </div>
-        </td>
-    </tr>
-)
-
 const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
+
+    const { userId, sessionClaims } = auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+    const currentUserId = userId;
+
+    const columns = [
+        {
+            header: "Subject Name",
+            accessor: "name",
+        },
+        {
+            header: "Class",
+            accessor: "class",
+        },
+        {
+            header: "Teacher",
+            accessor: "teacher",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Date",
+            accessor: "date",
+            className: "hidden md:table-cell",
+        },
+        ...(role === "admin" || role === "teacher" ? [{
+            header: "Actions",
+            accessor: "actions",
+        }] : []),
+    ]
+
+    const renderRow = (item: ExamList) => (
+        <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-skyLight">
+            <td className="flex items-center gap-4 p-4">{item.lesson.subject.name}</td>
+            <td>{item.lesson.class.name}</td>
+            <td className="hidden md:table-cell">{item.lesson.teacher.name + " " + item.lesson.teacher.surname}</td>
+            <td className="hidden md:table-cell">{new Intl.DateTimeFormat("en-UK").format(item.startTime)}</td>
+            <td>
+                <div className="flex items-center gap-2">
+                    {(role === "admin" || role === "teacher") && (
+                        <>
+                            <FormContainer table="exam" type="delete" id={item.id} />
+                            <FormContainer table="exam" type="update" data={item} />
+                        </>
+                    )}
+                </div>
+            </td>
+        </tr>
+    )
+
 
     const { page, sort, ...queryParams } = searchParams;
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.ExamWhereInput = {}
     query.lesson = {};
-    
+
     if (queryParams) {
         for (const [key, value] of Object.entries(queryParams)) {
             if (value !== undefined) {
@@ -125,7 +125,7 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
 
     let orderBy: any = { startTime: "asc" };
     if (sort) {
-        orderBy = sort === "asc" 
+        orderBy = sort === "asc"
             ? { lesson: { subject: { name: "asc" } } }
             : { lesson: { subject: { name: "desc" } } };
     }

@@ -10,10 +10,6 @@ import { auth } from "@clerk/nextjs/server"
 import { Attendance, Lesson, Prisma, Student } from "@prisma/client"
 import Image from "next/image"
 
-const { userId, sessionClaims } = auth();
-export const role = (sessionClaims?.metadata as { role?: string })?.role;
-export const currentUserId = userId;
-
 type AttendanceList = Attendance & {
     student: Student,
     lesson: {
@@ -23,69 +19,74 @@ type AttendanceList = Attendance & {
     }
 }
 
-const columns = [
-    {
-        header: "Student",
-        accessor: "student",
-    },
-    {
-        header: "Lesson",
-        accessor: "lesson",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Class",
-        accessor: "class",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Date",
-        accessor: "date",
-        className: "hidden lg:table-cell",
-    },
-    {
-        header: "Status",
-        accessor: "status",
-    },
-    ...(role === "admin" || role === "teacher" ? [{
-        header: "Actions",
-        accessor: "actions",
-    }] : []),
-]
+const AttendanceListPage = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
 
-const renderRow = (item: AttendanceList) => (
-    <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-skyLight">
-        <td className="flex items-center gap-4 p-4">
-            <div className="flex flex-col">
-                <h3 className="font-semibold">{item.student.name} {item.student.surname}</h3>
-                <p className="text-xs text-gray-500">{item.student.username}</p>
-            </div>
-        </td>
-        <td className="hidden md:table-cell">{item.lesson.subject.name}</td>
-        <td className="hidden md:table-cell">{item.lesson.class.name}</td>
-        <td className="hidden lg:table-cell">{new Intl.DateTimeFormat("en-UK").format(item.date)}</td>
-        <td>
-            <span className={`px-2 py-1 rounded-full text-xs font-medium ${item.present
+    const { userId, sessionClaims } = auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+    const currentUserId = userId;
+
+    const columns = [
+        {
+            header: "Student",
+            accessor: "student",
+        },
+        {
+            header: "Lesson",
+            accessor: "lesson",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Class",
+            accessor: "class",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Date",
+            accessor: "date",
+            className: "hidden lg:table-cell",
+        },
+        {
+            header: "Status",
+            accessor: "status",
+        },
+        ...(role === "admin" || role === "teacher" ? [{
+            header: "Actions",
+            accessor: "actions",
+        }] : []),
+    ]
+
+    const renderRow = (item: AttendanceList) => (
+        <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-skyLight">
+            <td className="flex items-center gap-4 p-4">
+                <div className="flex flex-col">
+                    <h3 className="font-semibold">{item.student.name} {item.student.surname}</h3>
+                    <p className="text-xs text-gray-500">{item.student.username}</p>
+                </div>
+            </td>
+            <td className="hidden md:table-cell">{item.lesson.subject.name}</td>
+            <td className="hidden md:table-cell">{item.lesson.class.name}</td>
+            <td className="hidden lg:table-cell">{new Intl.DateTimeFormat("en-UK").format(item.date)}</td>
+            <td>
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${item.present
                     ? "bg-green-100 text-green-800"
                     : "bg-red-100 text-red-800"
-                }`}>
-                {item.present ? "Present" : "Absent"}
-            </span>
-        </td>
-        <td>
-            <div className="flex items-center gap-2">
-                {(role === "admin" || role === "teacher") && (
-                    <>
-                        <FormContainer table="attendance" type="delete" id={item.id} />
-                        <FormContainer table="attendance" type="update" data={item} />
-                    </>
-                )}
-            </div>
-        </td>
-    </tr>
-)
+                    }`}>
+                    {item.present ? "Present" : "Absent"}
+                </span>
+            </td>
+            <td>
+                <div className="flex items-center gap-2">
+                    {(role === "admin" || role === "teacher") && (
+                        <>
+                            <FormContainer table="attendance" type="delete" id={item.id} />
+                            <FormContainer table="attendance" type="update" data={item} />
+                        </>
+                    )}
+                </div>
+            </td>
+        </tr>
+    )
 
-const AttendanceListPage = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
     const { page, sort, ...queryParams } = searchParams;
     const p = page ? parseInt(page) : 1;
 
@@ -135,9 +136,9 @@ const AttendanceListPage = async ({ searchParams }: { searchParams: { [key: stri
             break;
     }
 
-    let orderBy: any = { date: "desc" }; 
+    let orderBy: any = { date: "desc" };
     if (sort) {
-        orderBy = sort === "asc" 
+        orderBy = sort === "asc"
             ? { student: { name: "asc" } }
             : { student: { name: "desc" } };
     }

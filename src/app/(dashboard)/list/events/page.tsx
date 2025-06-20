@@ -11,6 +11,7 @@ import { Class, Event, Prisma } from "@prisma/client"
 type EventList = Event & { class: Class };
 
 const EventListPage = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
+    
     const { userId, sessionClaims } = auth();
     const role = (sessionClaims?.metadata as { role?: string })?.role;
     const currentUserId = userId;

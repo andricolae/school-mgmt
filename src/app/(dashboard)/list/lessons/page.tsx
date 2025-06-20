@@ -11,55 +11,55 @@ import Image from "next/image"
 
 type LessonList = Lesson & { subject: Subject } & { class: Class } & { teacher: Teacher }
 
-const { userId, sessionClaims } = auth();
-const role = (sessionClaims?.metadata as { role?: string })?.role;
-const currentUserId = userId;
-
-const columns = [
-    {
-        header: "Subject Name",
-        accessor: "name",
-    },
-    {
-        header: "Class",
-        accessor: "class",
-    },
-    {
-        header: "Teacher",
-        accessor: "teacher",
-        className: "hidden md:table-cell",
-    },
-    ...(role === "admin" || role === "teacher" ? [{
-        header: "Actions",
-        accessor: "actions",
-    }] : []),
-]
-
-const renderRow = (item: LessonList) => (
-    <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-skyLight">
-        <td className="flex items-center gap-4 p-4">{item.subject.name}</td>
-        <td>{item.class.name}</td>
-        <td className="hidden md:table-cell">{item.teacher.name + " " + item.teacher.surname}</td>
-        <td>
-            <div className="flex items-center gap-2">
-                {role === "admin" && (
-                    <>
-                        <FormContainer table="lesson" type="delete" id={item.id} />
-                        <FormContainer table="lesson" type="update" data={item} />
-                    </>
-                )}
-            </div>
-        </td>
-    </tr>
-)
-
 const LessonListPage = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
+
+    const { userId, sessionClaims } = auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+    const currentUserId = userId;
+
+    const columns = [
+        {
+            header: "Subject Name",
+            accessor: "name",
+        },
+        {
+            header: "Class",
+            accessor: "class",
+        },
+        {
+            header: "Teacher",
+            accessor: "teacher",
+            className: "hidden md:table-cell",
+        },
+        ...(role === "admin" || role === "teacher" ? [{
+            header: "Actions",
+            accessor: "actions",
+        }] : []),
+    ]
+
+    const renderRow = (item: LessonList) => (
+        <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-skyLight">
+            <td className="flex items-center gap-4 p-4">{item.subject.name}</td>
+            <td>{item.class.name}</td>
+            <td className="hidden md:table-cell">{item.teacher.name + " " + item.teacher.surname}</td>
+            <td>
+                <div className="flex items-center gap-2">
+                    {role === "admin" && (
+                        <>
+                            <FormContainer table="lesson" type="delete" id={item.id} />
+                            <FormContainer table="lesson" type="update" data={item} />
+                        </>
+                    )}
+                </div>
+            </td>
+        </tr>
+    )
 
     const { page, sort, ...queryParams } = searchParams;
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.LessonWhereInput = {}
-    
+
     if (queryParams) {
         for (const [key, value] of Object.entries(queryParams)) {
             if (value !== undefined) {
@@ -85,7 +85,7 @@ const LessonListPage = async ({ searchParams }: { searchParams: { [key: string]:
 
     let orderBy: any = { subject: { name: "asc" } };
     if (sort) {
-        orderBy = sort === "asc" 
+        orderBy = sort === "asc"
             ? { subject: { name: "asc" } }
             : { subject: { name: "desc" } };
     }

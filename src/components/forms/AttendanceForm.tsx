@@ -51,7 +51,7 @@ const AttendanceForm = ({
             setOpen(false);
             router.refresh();
         }
-    }, [state]);
+    }, [state, router, type, setOpen]);
 
     const { students, lessons } = relatedData || {};
 

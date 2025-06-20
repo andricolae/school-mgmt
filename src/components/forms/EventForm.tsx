@@ -51,7 +51,7 @@ const EventForm = ({
             setOpen(false);
             router.refresh();
         }
-    }, [state]);
+    }, [state, router, type, setOpen]);
 
     const { classes } = relatedData || {};
 
